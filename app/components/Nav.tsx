@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { PhoneCall, MessagesSquare, Workflow, Globe, Smartphone } from "lucide-react";
 import BookDemo from "./BookDemo";
+import MobileMenu from "./MobileMenu";
 
 const VOICE_AGENT_URL = "https://callagent.lazyrabbit.in";
 
@@ -38,7 +39,8 @@ export default function Nav() {
           <Link href="/about">About</Link>
           <Link href="/contact">Contact</Link>
         </div>
-        <BookDemo className="btn btn-primary" label="Book a demo →" />
+        <div className="nav-cta"><BookDemo className="btn btn-primary" label="Book a demo →" /></div>
+        <MobileMenu />
       </div>
     </nav>
   );
