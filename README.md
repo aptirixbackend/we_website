@@ -23,8 +23,12 @@ npm run start
 For the "Book a demo" live-call flow, set (in `.env.local`, not committed):
 
 ```bash
-LAZYRABBIT_CALL_TOKEN=...          # bearer token for the call-agent API
-# CALL_BACKEND_URL=https://...     # optional override for the call-agent backend URL
+LAZYRABBIT_CALL_TOKEN=...           # REQUIRED — bearer token for the call-agent API
+
+# optional overrides (sensible defaults are baked in):
+# CALL_BACKEND_URL=https://call-agent-lazyrabbit-120328177322.asia-south1.run.app
+# CALL_DEMO_PROMPT_ID=lazlazyb77562  # which script the demo call uses
+# CALL_DEMO_LANGUAGE=tamil           # demo call language
 ```
 
 Without the token the contact/demo forms still **save the lead**; the outbound call just won't fire.

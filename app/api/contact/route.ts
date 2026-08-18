@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 // The deployed call-agent backend. Override with CALL_BACKEND_URL if it ever changes.
-const BACKEND = process.env.CALL_BACKEND_URL || "https://lazyrabbitcallagent-610696728606.asia-south1.run.app";
+const BACKEND = process.env.CALL_BACKEND_URL || "https://call-agent-lazyrabbit-120328177322.asia-south1.run.app";
 
 export async function POST(request: Request) {
   let b: Record<string, string>;

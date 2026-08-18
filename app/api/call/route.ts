@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 
 // The deployed call-agent backend. Override with CALL_BACKEND_URL if it ever changes.
-const BACKEND = process.env.CALL_BACKEND_URL || "https://lazyrabbitcallagent-610696728606.asia-south1.run.app";
+const BACKEND = process.env.CALL_BACKEND_URL || "https://call-agent-lazyrabbit-120328177322.asia-south1.run.app";
+
+// Script the website demo call uses. Override with CALL_DEMO_PROMPT_ID.
+const DEMO_PROMPT_ID = process.env.CALL_DEMO_PROMPT_ID || "lazlazyb77562";
+const DEMO_LANGUAGE = process.env.CALL_DEMO_LANGUAGE || "tamil";
 
 export async function POST(request: Request) {
   let body: { to_number?: string; name?: string };
@@ -47,7 +51,7 @@ export async function POST(request: Request) {
     const res = await fetch(`${BACKEND}/api/v1/call`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ to_number: toNumber, prompt_id: "mlvlaz", language: "tamil" }),
+      body: JSON.stringify({ to_number: toNumber, prompt_id: DEMO_PROMPT_ID, language: DEMO_LANGUAGE }),
     });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {
