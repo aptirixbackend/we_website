@@ -8,7 +8,7 @@ const INFO = [
   { label: "Email us", value: "info@lazyrabbit.in" },
   { label: "Call us", value: "+91 90947 70827" },
   { label: "Hours", value: "Mon – Fri · 10 AM – 7 PM IST" },
-  { label: "Visit", value: "Egmore, Chennai, Tamil Nadu" },
+  { label: "Visit", value: "715-A, 7th Floor, Spencer Plaza, Mount Road (Anna Salai), Chennai – 600002" },
 ];
 
 export default function Page() {

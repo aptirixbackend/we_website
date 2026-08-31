@@ -32,7 +32,9 @@ export default function Footer() {
             <h5>Get in touch</h5>
             <a href="mailto:info@lazyrabbit.in">info@lazyrabbit.in</a>
             <a href="tel:+919094770827">+91 90947 70827</a>
-            <span style={{ color: "var(--dark-muted)", fontSize: 14, display: "block", paddingTop: 6 }}>Egmore, Chennai, India</span>
+            <span style={{ color: "var(--dark-muted)", fontSize: 14, display: "block", paddingTop: 6, lineHeight: 1.5 }}>
+              715-A, 7th Floor, Spencer Plaza,<br />Mount Road (Anna Salai), Chennai – 600002
+            </span>
           </div>
         </div>
         <div className="row">

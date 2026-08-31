@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <LegalShell title="Privacy Policy" updated="23 June 2026">
+    <LegalShell title="Privacy Policy" updated="31 August 2026">
       <p>
         LazyRabbit (“LazyRabbit”, “we”, “us”) provides an AI voice-calling and messaging platform that lets
         businesses place and receive phone calls, send WhatsApp/email/SMS, and manage the resulting customer
@@ -83,8 +83,20 @@ export default function PrivacyPage() {
         and for using the platform only for lawful, consented outreach.
       </p>
 
-      <H>9. Cookies</H>
-      <p>We use a minimal set of storage (an authentication token) needed to keep you signed in. We do not use third-party advertising cookies.</p>
+      <H>9. Cookies &amp; analytics</H>
+      <p>
+        We use a minimal set of storage (an authentication token) needed to keep you signed in. We do
+        <strong> not</strong> use third-party advertising cookies and we do not sell your data.
+      </p>
+      <p>
+        On our website we also use <strong>privacy-friendly, first-party analytics</strong> to understand how
+        visitors use the site (pages viewed, clicks, approximate location derived from IP, device and referrer)
+        so we can improve it. These analytics cookies are <strong>only set after you accept</strong> the cookie
+        banner — if you decline, no analytics cookies are stored and no analytics data is collected. The cookies
+        store random visitor and session identifiers (not your name), your IP address is stored only in
+        anonymised (hashed) form, and the data is kept on our own infrastructure and never sold or used for
+        advertising. You can withdraw consent at any time by clearing cookies for this site.
+      </p>
 
       <H>10. Children</H>
       <p>The service is for businesses and is not directed to anyone under 18.</p>

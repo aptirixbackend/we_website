@@ -25,7 +25,12 @@ export default function Hero() {
           <a href="#services" className="btn btn-ghost">See how it works</a>
         </div>
         <div className="trust">
-          <div className="dots"><i /><i /><i /><i /></div>
+          <div className="dots">
+            <img src="/avatars/1.svg" alt="" width={40} height={40} loading="lazy" />
+            <img src="/avatars/2.svg" alt="" width={40} height={40} loading="lazy" />
+            <img src="/avatars/3.svg" alt="" width={40} height={40} loading="lazy" />
+            <img src="/avatars/4.svg" alt="" width={40} height={40} loading="lazy" />
+          </div>
           <div>Trusted by teams who’d rather build than do busywork.</div>
         </div>
       </div>
