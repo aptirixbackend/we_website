@@ -4,38 +4,70 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getConsent, setConsent, initAnalytics } from "../lib/track";
 
-// Renders the cookie-consent banner and starts first-party analytics only after the visitor
-// accepts. Mounted once in the root layout. Server render outputs nothing (hydration-safe);
-// the banner appears client-side only when no choice has been recorded yet.
+// EEA + UK (+ Switzerland) — where non-essential/analytics cookies legally need prior opt-in.
+const OPT_IN_COUNTRIES = new Set([
+  "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT",
+  "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE",   // EU
+  "IS", "LI", "NO",                                                          // rest of EEA
+  "GB", "CH",                                                                // UK, Switzerland
+]);
+
+type Mode = "deciding" | "optin" | "info" | "hidden";
+
+// Cookie-consent banner. In EU/UK it asks (opt-in — nothing set until Accept); elsewhere it grants
+// privacy-friendly analytics by default and simply informs (dismissible). Mounted once in the layout.
 export default function Analytics() {
-  const [choice, setChoice] = useState<"granted" | "denied" | "" | null>(null);
+  const [mode, setMode] = useState<Mode>("deciding");
 
   useEffect(() => {
-    initAnalytics();          // resume tracking if consent was granted on a previous visit
-    setChoice(getConsent());  // "" → show the banner
+    initAnalytics();                                   // resume if consent was granted before
+    const prior = getConsent();
+    if (prior === "granted" || prior === "denied") { setMode("hidden"); return; }
+
+    let alive = true;
+    (async () => {
+      let optIn = true;                                // if geo is unknown, use the stricter opt-in
+      try {
+        const r = await fetch("/api/geo", { cache: "no-store" });
+        const cc = ((await r.json())?.country || "").toUpperCase();
+        optIn = cc ? OPT_IN_COUNTRIES.has(cc) : true;
+      } catch { optIn = true; }
+      if (!alive) return;
+      if (optIn) {
+        setMode("optin");
+      } else {
+        setConsent("granted");                         // info-only regions: analytics on by default
+        setMode("info");
+      }
+    })();
+    return () => { alive = false; };
   }, []);
 
-  function decide(v: "granted" | "denied") {
-    setConsent(v);
-    setChoice(v);
-  }
+  function decide(v: "granted" | "denied") { setConsent(v); setMode("hidden"); }
 
-  if (choice === null || choice === "granted" || choice === "denied") return null;
+  if (mode === "deciding" || mode === "hidden") return null;
 
   return (
-    <div role="dialog" aria-live="polite" aria-label="Cookie consent" style={S.wrap}>
+    <div role="dialog" aria-live="polite" aria-label="Cookie notice" style={S.wrap}>
       <div style={S.card}>
         <div style={S.text}>
           <strong style={S.title}>We use cookies</strong>
           <p style={S.body}>
-            We use privacy-friendly analytics cookies to understand how visitors use this site and
-            improve it. No ads, no selling your data. See our{" "}
-            <Link href="/privacy" style={S.link}>Privacy Policy</Link>.
+            {mode === "optin"
+              ? "We use privacy-friendly analytics cookies to understand how visitors use this site and improve it. No ads, no selling your data."
+              : "We use privacy-friendly analytics cookies to improve this site. No ads, no selling your data."}{" "}
+            See our <Link href="/privacy" style={S.link}>Privacy Policy</Link>.
           </p>
         </div>
         <div style={S.actions}>
-          <button type="button" onClick={() => decide("denied")} style={S.decline}>Decline</button>
-          <button type="button" onClick={() => decide("granted")} style={S.accept}>Accept</button>
+          {mode === "optin" ? (
+            <>
+              <button type="button" onClick={() => decide("denied")} style={S.decline}>Decline</button>
+              <button type="button" onClick={() => decide("granted")} style={S.accept}>Accept</button>
+            </>
+          ) : (
+            <button type="button" onClick={() => setMode("hidden")} style={S.accept}>Got it</button>
+          )}
         </div>
       </div>
     </div>

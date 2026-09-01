@@ -14,12 +14,18 @@ const SESSION_MIN = 30;
 type Ev = Record<string, unknown>;
 
 let started = false;
+let returning = false;
 let visitorId = "";
 let sessionId = "";
 let queue: Ev[] = [];
 let pageStart = 0;
 let currentPath = "";
 let flushTimer: number | undefined;
+
+/** True once tracking has started AND this browser already had a visitor cookie from a prior visit. */
+export function isReturning(): boolean {
+  return started && returning;
+}
 
 function readCookie(name: string): string {
   try {
@@ -61,7 +67,9 @@ function start() {
   try { if (window.self !== window.top) return; } catch { return; }   // never track inside an iframe
   started = true;
   try {
-    visitorId = readCookie(C_VISITOR) || uuid();
+    const existingVid = readCookie(C_VISITOR);
+    returning = !!existingVid;                            // seen this browser before?
+    visitorId = existingVid || uuid();
     writeCookie(C_VISITOR, visitorId, 365);
     sessionId = readCookie(C_SESSION) || uuid();
     refreshSession();
@@ -73,6 +81,8 @@ function start() {
     flushTimer = window.setInterval(flush, 8000);
     observeVitals();
     pageview();
+    // Let UI (e.g. a "welcome back" greeting) react once tracking is live.
+    try { window.dispatchEvent(new CustomEvent("lr:started", { detail: { returning } })); } catch { /* ignore */ }
   } catch { /* never break the page */ }
 }
 function stop() { started = false; queue = []; }

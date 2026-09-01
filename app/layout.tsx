@@ -5,6 +5,8 @@ import SiteMotion from "./components/SiteMotion";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import Analytics from "./components/Analytics";
+import DemoPopup from "./components/DemoPopup";
+import WelcomeBack from "./components/WelcomeBack";
 
 const SITE_URL = "https://lazyrabbit.in";
 
@@ -182,6 +184,8 @@ export default function RootLayout({
           <Footer />
         </SiteMotion>
         <Analytics />
+        <WelcomeBack />
+        <DemoPopup />
       </body>
     </html>
   );
