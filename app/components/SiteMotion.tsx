@@ -54,7 +54,16 @@ export default function SiteMotion({ children }: { children: React.ReactNode }) 
       if (lenisRef.current) lenisRef.current.scrollTo(0, { immediate: true });
       else window.scrollTo(0, 0);
     }
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // No GSAP under reduced motion, so the count-up never runs — set each stat to its final value
+      // directly (otherwise the numbers stay stuck at 0).
+      document.querySelectorAll<HTMLElement>(".stat .n").forEach((el) => {
+        const to = parseFloat(el.dataset.to || "0");
+        const suf = el.dataset.suffix || "";
+        el.textContent = to.toFixed(to % 1 !== 0 ? 1 : 0) + suf;
+      });
+      return;
+    }
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {

@@ -265,4 +265,10 @@ footer.site .muted-d{font-size:13px}
   .reveal,.prob-word,.prob-end,.stat .bar{opacity:1!important;transform:none!important}
   h1.hero-h .line>span{transform:none!important}
   html{scroll-behavior:auto}
+  /* GSAP is skipped under reduced motion, so un-pin the scrollytelling and un-stack its phrases —
+     otherwise the absolutely-positioned lines all pile up on top of each other. */
+  .problem{height:auto}
+  .problem .sticky{position:static;height:auto}
+  .prob-stage{min-height:0}
+  .prob-word,.prob-end{position:relative;top:auto;margin:.15em 0}
 }
